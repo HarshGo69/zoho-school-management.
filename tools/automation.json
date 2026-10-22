@@ -1,0 +1,152 @@
+[
+ {
+  "name": "wfConfirmAdmission",
+  "file": "automation",
+  "ret": "void",
+  "category": "automation",
+  "params": [
+   {
+    "name": "leadId",
+    "type": "int"
+   }
+  ],
+  "workflow": "// Leads : Edit\nlead = zoho.crm.getRecordById(\"Leads\", leadId);\nif(ifnull(lead.get(\"Lead_Status\"), \"\") == \"Admission Confirmed\")\n{\n    standalone.confirmAdmission(leadId);\n}\n",
+  "module": "Leads",
+  "trigger": "Edit"
+ },
+ {
+  "name": "wfEnforceSingleCurrentYear",
+  "file": "automation",
+  "ret": "void",
+  "category": "automation",
+  "params": [
+   {
+    "name": "yearId",
+    "type": "string"
+   }
+  ],
+  "workflow": "// Academic_Years : Create or Edit\nyr = zoho.crm.getRecordById(\"Academic_Years\", yearId.toLong());\nif(ifnull(yr.get(\"Is_Current\"), false))\n{\n    standalone.enforceSingleCurrentYear(yearId);\n}\n",
+  "module": "Academic_Years",
+  "trigger": "Create or Edit"
+ },
+ {
+  "name": "wfAttendanceCreated",
+  "file": "automation",
+  "ret": "void",
+  "category": "automation",
+  "params": [
+   {
+    "name": "attendanceId",
+    "type": "string"
+   }
+  ],
+  "workflow": "// Attendance : Create\nstandalone.attendanceRollupFromRecord(attendanceId, \"create\");\n",
+  "module": "Attendance",
+  "trigger": "Create"
+ },
+ {
+  "name": "wfAttendanceEdited",
+  "file": "automation",
+  "ret": "void",
+  "category": "automation",
+  "params": [
+   {
+    "name": "attendanceId",
+    "type": "string"
+   }
+  ],
+  "workflow": "// Attendance : Edit\nstandalone.attendanceRollupFromRecord(attendanceId, \"edit\");\n",
+  "module": "Attendance",
+  "trigger": "Edit"
+ },
+ {
+  "name": "wfValidateMark",
+  "file": "automation",
+  "ret": "void",
+  "category": "automation",
+  "params": [
+   {
+    "name": "markId",
+    "type": "int"
+   }
+  ],
+  "workflow": "// Marks : Create or Edit\nstandalone.validateMark(markId);\n",
+  "module": "Marks",
+  "trigger": "Create or Edit"
+ },
+ {
+  "name": "wfPublishExamResults",
+  "file": "automation",
+  "ret": "void",
+  "category": "automation",
+  "params": [
+   {
+    "name": "examId",
+    "type": "int"
+   }
+  ],
+  "workflow": "// Examinations : Edit\nex = zoho.crm.getRecordById(\"Examinations\", examId);\nif(ifnull(ex.get(\"Results_Published\"), false))\n{\n    standalone.publishExamResults(examId);\n}\n",
+  "module": "Examinations",
+  "trigger": "Edit"
+ },
+ {
+  "name": "wfPaymentCreated",
+  "file": "automation",
+  "ret": "void",
+  "category": "automation",
+  "params": [
+   {
+    "name": "paymentId",
+    "type": "int"
+   }
+  ],
+  "workflow": "// Payments : Create\nstandalone.allocatePayment(paymentId);\nstandalone.generateReceipt(paymentId);\n",
+  "module": "Payments",
+  "trigger": "Create"
+ },
+ {
+  "name": "wfPaymentEdited",
+  "file": "automation",
+  "ret": "void",
+  "category": "automation",
+  "params": [
+   {
+    "name": "paymentId",
+    "type": "int"
+   }
+  ],
+  "workflow": "// Payments : Edit\nstandalone.allocatePayment(paymentId);\n",
+  "module": "Payments",
+  "trigger": "Edit"
+ },
+ {
+  "name": "wfInvalidatePortalCache",
+  "file": "automation",
+  "ret": "void",
+  "category": "automation",
+  "params": [
+   {
+    "name": "studentId",
+    "type": "int"
+   }
+  ],
+  "workflow": "// Students : Create or Edit\nstandalone.invalidatePortalCache(studentId);\n",
+  "module": "Students",
+  "trigger": "Create or Edit"
+ },
+ {
+  "name": "wfProcessLeaveApproval",
+  "file": "automation",
+  "ret": "void",
+  "category": "automation",
+  "params": [
+   {
+    "name": "leaveId",
+    "type": "int"
+   }
+  ],
+  "workflow": "// Leave_Requests : Edit\nlv = zoho.crm.getRecordById(\"Leave_Requests\", leaveId);\nst = ifnull(lv.get(\"Status\"), \"\").toString();\nif(st == \"Approved\" || st == \"Rejected\")\n{\n    standalone.processLeaveApproval(leaveId);\n}\n",
+  "module": "Leave_Requests",
+  "trigger": "Edit"
+ }
+]
